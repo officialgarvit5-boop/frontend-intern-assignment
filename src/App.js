@@ -140,7 +140,7 @@ function App() {
     <div className={`app ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
       <header className="header">
         <div className="header-content">
-          <h1 className="header-title">🛍️ Product Dashboard</h1>
+          <h1 className="header-title">🛍️ Airfy</h1>
           <div className="header-controls">
             <input
               type="text"
