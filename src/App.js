@@ -29,9 +29,11 @@ function ProductCard({ product, onCardClick, isFavorite, onFavoriteToggle }) {
 }
 
 
-function ProductModal({ product, isOpen, onClose }) {
+function ProductModal({ product, isOpen, onClose, cartItems, onAddToCart }) {
   if (!isOpen || !product) return null;
 
+  const itemInCart = cartItems.find(item => item.id === product.id);
+  const quantity = itemInCart ? itemInCart.quantity : 0;
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -45,7 +47,12 @@ function ProductModal({ product, isOpen, onClose }) {
             <p className="modal-description">{product.description}</p>
             <div className="modal-rating">⭐ {product.rating.rate}</div>
             <div className="modal-price">${product.price.toFixed(2)}</div>
-            <button className="modal-buy-btn">Add to Cart</button>
+            <button 
+              className={`modal-buy-btn ${quantity > 0 ? 'in-cart' : ''}`}
+              onClick={() => onAddToCart(product)}
+            >
+              🛒 Add to Cart {quantity > 0 && `(${quantity})`}
+            </button>
           </div>
         </div>
       </div>
@@ -67,6 +74,7 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [favorites, setFavorites] = useState([]);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
 
 
   useEffect(() => {
@@ -100,10 +108,14 @@ function App() {
       setFavorites(JSON.parse(savedFavorites));
     }
 
-
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
       setIsDarkMode(true);
+    }
+
+    const savedCart = localStorage.getItem('cartItems');
+    if (savedCart) {
+      setCartItems(JSON.parse(savedCart));
     }
   }, []);
 
@@ -111,6 +123,10 @@ function App() {
   useEffect(() => {
     localStorage.setItem('favorites', JSON.stringify(favorites));
   }, [favorites]);
+
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
 
 
   useEffect(() => {
@@ -162,6 +178,21 @@ function App() {
     );
   };
 
+  const handleAddToCart = (product) => {
+    setCartItems((prev) => {
+      const existingItem = prev.find(item => item.id === product.id);
+      if (existingItem) {
+        return prev.map(item =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      } else {
+        return [...prev, { ...product, quantity: 1 }];
+      }
+    });
+  };
+
 
   return (
     <div className={`app ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
@@ -184,6 +215,9 @@ function App() {
             </button>
             <div className="favorites-counter">
               ♥ {favorites.length}
+            </div>
+            <div className="cart-counter">
+              🛒 {cartItems.length}
             </div>
           </div>
         </div>
@@ -254,6 +288,8 @@ function App() {
         product={selectedProduct}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        cartItems={cartItems}
+        onAddToCart={handleAddToCart}
       />
     </div>
   );
