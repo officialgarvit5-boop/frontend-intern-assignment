@@ -405,7 +405,10 @@ pre code {
   border: none;
   text-decoration: none;
   position: relative;
-  box-shadow: 0 1px 4px rgba(33, 128, 141, 0.08);
+  box-shadow: 0 2px 8px rgba(67, 206, 162, 0.10);
+  background: linear-gradient(120deg, #43cea2 0%, #185a9d 100%);
+  color: #fff;
+  font-weight: 600;
 }
 
 .btn:focus-visible {
@@ -414,15 +417,16 @@ pre code {
 }
 
 .btn--primary {
-  background: var(--color-primary);
-  color: var(--color-btn-primary-text);
-  box-shadow: 0 2px 8px rgba(33, 128, 141, 0.12);
+  background: linear-gradient(120deg, #43cea2 0%, #185a9d 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(67, 206, 162, 0.18);
+  border: 2px solid #43cea2;
 }
 
 .btn--primary:hover {
-  background: var(--color-primary-hover);
-  box-shadow: 0 4px 16px rgba(33, 128, 141, 0.18);
-  transform: scale(1.06);
+  background: linear-gradient(120deg, #185a9d 0%, #43cea2 100%);
+  box-shadow: 0 8px 32px rgba(67, 206, 162, 0.32);
+  transform: scale(1.12) rotate(-2deg);
 }
 
 .btn--primary:active {
@@ -812,14 +816,15 @@ select.form-control {
 /* Header theming */
 .header {
   padding: var(--space-16) var(--space-20);
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
-  border-bottom: 1px solid var(--color-border);
-  box-shadow: 0 6px 24px rgba(33, 128, 141, 0.10), 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: linear-gradient(120deg, #43cea2 0%, #185a9d 100%);
+  border-bottom: 2px solid rgba(67, 206, 162, 0.18);
+  box-shadow: 0 8px 32px rgba(67, 206, 162, 0.18), 0 2px 8px rgba(24, 90, 157, 0.12);
   transition: all var(--duration-normal) var(--ease-standard), box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: sticky;
   top: 0;
   z-index: 100;
-  animation: header-gradient-move 6s ease-in-out infinite alternate;
+  animation: header-gradient-move 8s ease-in-out infinite alternate;
+  backdrop-filter: blur(8px) saturate(180%);
 }
 
 @keyframes header-gradient-move {
@@ -865,16 +870,17 @@ select.form-control {
 
 /* Product card theming */
 .product-card {
-  background: var(--color-surface);
-  border: 1.5px solid var(--color-card-border);
-  border-radius: var(--radius-lg);
+  background: rgba(255,255,255,0.85);
+  border: 2px solid rgba(67, 206, 162, 0.18);
+  border-radius: 18px;
   padding: var(--space-16);
-  box-shadow: 0 2px 8px rgba(33, 128, 141, 0.08), 0 1px 4px rgba(0, 0, 0, 0.06);
-  transition: box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s var(--ease-standard), transform 0.3s var(--ease-standard);
+  box-shadow: 0 4px 24px rgba(67, 206, 162, 0.12), 0 2px 8px rgba(24, 90, 157, 0.10);
+  transition: box-shadow 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s var(--ease-standard), transform 0.3s var(--ease-standard), background 0.3s;
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  border-image: linear-gradient(90deg, var(--color-primary), var(--color-primary-hover)) 1;
+  border-image: linear-gradient(90deg, #43cea2, #185a9d) 1;
+  backdrop-filter: blur(4px) saturate(120%);
 }
 
 .product-card::before {
@@ -893,10 +899,11 @@ select.form-control {
 }
 
 .product-card:hover {
-  box-shadow: 0 16px 32px rgba(33, 128, 141, 0.18), 0 4px 16px rgba(0, 0, 0, 0.12);
-  transform: translateY(-8px) scale(1.04);
-  border-color: var(--color-primary);
-  border-image: linear-gradient(90deg, var(--color-primary-hover), var(--color-primary)) 1;
+  box-shadow: 0 24px 64px rgba(67, 206, 162, 0.32), 0 8px 32px rgba(24, 90, 157, 0.22);
+  transform: translateY(-12px) scale(1.07) rotate(-1deg);
+  border-color: #43cea2;
+  border-image: linear-gradient(90deg, #43cea2, #185a9d) 1;
+  background: rgba(255,255,255,0.95);
 }
 
 /* Modal theming */
@@ -914,17 +921,18 @@ select.form-control {
 }
 
 .modal-content {
-  background: var(--color-surface);
-  border: 1.5px solid var(--color-card-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-24);
+  background: rgba(255,255,255,0.92);
+  border: 2px solid rgba(67, 206, 162, 0.18);
+  border-radius: 24px;
+  padding: var(--space-32);
   max-width: 90vw;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 8px 32px rgba(33, 128, 141, 0.18), 0 2px 8px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 16px 64px rgba(67, 206, 162, 0.22), 0 4px 16px rgba(24, 90, 157, 0.18);
   position: relative;
-  animation: modal-pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  transition: box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s var(--ease-standard), transform 0.3s var(--ease-standard);
+  animation: modal-pop-in 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: box-shadow 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s var(--ease-standard), transform 0.3s var(--ease-standard), background 0.3s;
+  backdrop-filter: blur(8px) saturate(140%);
 
 @keyframes modal-pop-in {
   0% {
@@ -945,25 +953,26 @@ select.form-control {
   width: 32px;
   height: 32px;
   padding: 0;
-  background: var(--color-secondary);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-base);
+  background: linear-gradient(120deg, #43cea2 0%, #185a9d 100%);
+  border: 2px solid #43cea2;
+  border-radius: 50%;
   cursor: pointer;
   font-size: var(--font-size-lg);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard), box-shadow 0.3s var(--ease-standard), transform 0.2s var(--ease-standard);
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.2s;
   line-height: 1;
-  color: var(--color-text);
-  box-shadow: 0 2px 8px rgba(33, 128, 141, 0.10);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(67, 206, 162, 0.18);
+  backdrop-filter: blur(2px) saturate(120%);
 }
 
 .modal-close:hover {
-  background: var(--color-primary);
-  color: var(--color-btn-primary-text);
-  box-shadow: 0 4px 16px rgba(33, 128, 141, 0.18);
-  transform: scale(1.12);
+  background: linear-gradient(120deg, #185a9d 0%, #43cea2 100%);
+  color: #fff;
+  box-shadow: 0 8px 32px rgba(67, 206, 162, 0.32);
+  transform: scale(1.18) rotate(-8deg);
 }
 
 .modal-close:focus-visible {
