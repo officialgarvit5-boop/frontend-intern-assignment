@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
+
 function ProductCard({ product, onCardClick, isFavorite, onFavoriteToggle }) {
   return (
     <div className="product-card" onClick={() => onCardClick(product)}>
@@ -27,8 +28,10 @@ function ProductCard({ product, onCardClick, isFavorite, onFavoriteToggle }) {
   );
 }
 
+
 function ProductModal({ product, isOpen, onClose }) {
   if (!isOpen || !product) return null;
+
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -50,6 +53,7 @@ function ProductModal({ product, isOpen, onClose }) {
   );
 }
 
+
 function App() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -64,6 +68,7 @@ function App() {
   const [favorites, setFavorites] = useState([]);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -72,6 +77,7 @@ function App() {
         const data = await response.json();
         setProducts(data);
         setFilteredProducts(data);
+
 
         const uniqueCategories = ['all', ...new Set(data.map((p) => p.category))];
         setCategories(uniqueCategories);
@@ -83,8 +89,10 @@ function App() {
       }
     };
 
+
     fetchProducts();
   }, []);
+
 
   useEffect(() => {
     const savedFavorites = localStorage.getItem('favorites');
@@ -92,22 +100,35 @@ function App() {
       setFavorites(JSON.parse(savedFavorites));
     }
 
+
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
       setIsDarkMode(true);
     }
   }, []);
 
+
   useEffect(() => {
     localStorage.setItem('favorites', JSON.stringify(favorites));
   }, [favorites]);
 
-  useEffect(() => {
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-  }, [isDarkMode]);
 
   useEffect(() => {
-    let filtered = products;
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    // 🔧 FIX: Also apply theme to document
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode');
+      document.body.classList.remove('light-mode');
+    } else {
+      document.body.classList.add('light-mode');
+      document.body.classList.remove('dark-mode');
+    }
+  }, [isDarkMode]);
+
+
+  useEffect(() => {
+    let filtered = [...products];  // 🔧 FIX: Create copy to avoid mutations
+
 
     if (searchTerm) {
       filtered = filtered.filter((p) =>
@@ -115,18 +136,23 @@ function App() {
       );
     }
 
+
     if (selectedCategory !== 'all') {
       filtered = filtered.filter((p) => p.category === selectedCategory);
     }
 
+
+    // 🔧 FIX: Create new array copy before sorting to prevent mutation
     if (sortBy === 'low-to-high') {
-      filtered.sort((a, b) => a.price - b.price);
+      filtered = [...filtered].sort((a, b) => a.price - b.price);
     } else if (sortBy === 'high-to-low') {
-      filtered.sort((a, b) => b.price - a.price);
+      filtered = [...filtered].sort((a, b) => b.price - a.price);
     }
+
 
     setFilteredProducts(filtered);
   }, [products, searchTerm, selectedCategory, sortBy]);
+
 
   const handleFavoriteToggle = (productId) => {
     setFavorites((prev) =>
@@ -135,6 +161,7 @@ function App() {
         : [...prev, productId]
     );
   };
+
 
   return (
     <div className={`app ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
@@ -162,6 +189,7 @@ function App() {
         </div>
       </header>
 
+
       <main className="main-content">
         <div className="filter-bar">
           <div className="filter-group">
@@ -180,6 +208,7 @@ function App() {
             </select>
           </div>
 
+
           <div className="filter-group">
             <label htmlFor="sort">Sort Price:</label>
             <select
@@ -194,6 +223,7 @@ function App() {
             </select>
           </div>
         </div>
+
 
         {error ? (
           <div className="error-message">Error: {error}</div>
@@ -219,6 +249,7 @@ function App() {
         )}
       </main>
 
+
       <ProductModal
         product={selectedProduct}
         isOpen={isModalOpen}
@@ -228,4 +259,3 @@ function App() {
   );
 }
 export default App;
-
